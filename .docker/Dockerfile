@@ -2,6 +2,6 @@ FROM swipl:latest
 
 WORKDIR /workspace
 
-RUN swipl pack install lsp_server
+RUN swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt
 
 CMD ["swipl"]

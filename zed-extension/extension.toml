@@ -1,0 +1,26 @@
+id = "prolog"
+name = "Prolog"
+version = "0.1.0"
+schema_version = 1
+
+authors = [
+    "LogicDock contributors"
+]
+
+description = "Prolog syntax and SWI-Prolog language server integration for Zed"
+
+repository = "https://github.com/gersimuca/logic-dock"
+
+
+[grammars.prolog]
+
+repository = "https://github.com/Piefayth/tree-sitter-prolog"
+
+commit = "9db4b3f23e8ba35d41075dd163a65b30d969dc13"
+
+
+[language_servers.swipl-lsp]
+
+name = "SWI-Prolog Language Server"
+
+languages = ["Prolog"]

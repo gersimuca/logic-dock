@@ -1,3 +1,13 @@
+# macOS
 .DS_Store
+
+# Editors
 *.swp
+*.swo
+
+# Logs
 *.log
+
+# Rust build output
+target/
+zed-extension/target/
