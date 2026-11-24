@@ -1,0 +1,15 @@
+services:
+  prolog:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+
+    working_dir: ${PROLOG_PROJECT_ROOT:-/workspace}
+
+    entrypoint: ["swipl"]
+
+    volumes:
+      - ${PROLOG_PROJECT_ROOT:-.}:${PROLOG_PROJECT_ROOT:-/workspace}
+
+    stdin_open: true
+    tty: true
