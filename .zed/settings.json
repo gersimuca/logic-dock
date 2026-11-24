@@ -1,0 +1,11 @@
+{
+  "languages": {
+    "Prolog": {
+      "enable_language_server": true,
+      "language_servers": [
+        "swipl-lsp"
+      ],
+      "tab_size": 4
+    }
+  }
+}
