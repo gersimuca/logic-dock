@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Prolog: Start REPL",
+    "command": "docker",
+    "args": [
+      "compose",
+      "run",
+      "--rm",
+      "prolog"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "use_new_terminal": true
+  }
+]
