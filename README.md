@@ -680,5 +680,3 @@ git checkout -b feature/my-improvement
 ## License
 
 This project is intended to be open source.
-
-Add a `LICENSE` file to the repository before publishing and choose an appropriate license, such as the MIT License.
