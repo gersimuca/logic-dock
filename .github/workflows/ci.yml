@@ -1,0 +1,80 @@
+
+name: LogicDock CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: logicdock-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate LogicDock
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      PROLOG_PROJECT_ROOT: ${{ github.workspace }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Shell validation
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/*.sh
+
+      # Docker validation
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+
+      - name: Build Docker environment
+        run: bash scripts/build.sh
+
+      # SWI-Prolog validation
+      - name: Check SWI-Prolog version
+        run: bash scripts/prolog-version.sh
+
+      - name: Execute example Prolog program
+        run: |
+          bash scripts/run-file.sh src/family.pl
+
+      - name: Test Prolog query
+        run: |
+          output=$(bash scripts/query.sh \
+            src/family.pl \
+            "grandparent(john, X), writeln(X)")
+
+          echo "$output"
+
+          if ! grep -Fxq "alice" <<< "$output"; then
+            echo "ERROR: Prolog query returned unexpected output"
+            exit 1
+          fi
+
+      # Rust / Zed extension validation
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+
+      - name: Check Rust extension
+        working-directory: zed-extension
+        run: cargo check --target wasm32-wasip2
+
+      # Cleanup
+      - name: Clean up Docker resources
+        if: always()
+        run: docker compose down --remove-orphans
